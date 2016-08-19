@@ -45,15 +45,25 @@ RUN dpkg --add-architecture i386 && \
 # Installs Android SDK
 # ——————————
 
+ENV ANDROID_SDK_VERSION r24.4.1
+ENV ANDROID_SDK_FILENAME android-sdk_${ANDROID_SDK_VERSION}-linux.tgz
+ENV ANDROID_SDK_URL http://dl.google.com/android/${ANDROID_SDK_FILENAME}
 
-ENV ANDROID_SDK_VERSION r25.2.2
 ENV ANDROID_BUILD_TOOLS_VERSION build-tools-24.0.1 build-tools-24 build-tools-23.0.3,build-tools-23.0.2,build-tools-23.0.1
-ENV ANDROID_SDK_FILENAME tools_${ANDROID_SDK_VERSION}-linux.zip
-ENV ANDROID_SDK_URL https://dl.google.com/android/repository/${ANDROID_SDK_FILENAME}
-
+# ————————————————————————————
+#ENV ANDROID_TOOLS_VERSION r25.2.2
+#ENV ANDROID_TOOLS_FILENAME tools_${ANDROID_TOOLS_VERSION}-linux.zip
+#ENV ANDROID_TOOLS_URL https://dl.google.com/android/repository/${ANDROID_TOOLS_FILENAME}
+#ENV ANDROID_PLATFORM_VERSION r24
+#ENV ANDROID_PLATFORM_FILENAME platform-tools_${ANDROID_PLATFORM_VERSION}-linux.zip
+#ENV ANDROID_PLATFORM_URL https://dl.google.com/android/repository/${ANDROID_PLATFORM_FILENAME}
+# —————————————————————————————
 ENV ANDROID_NDK_VERSION r12b
 ENV ANDROID_NDK_FILENAME android-ndk-${ANDROID_NDK_VERSION}-linux-x86_64.zip
 ENV ANDROID_NDK_URL https://dl.google.com/android/repository/${ANDROID_NDK_FILENAME}
+
+ENV ANDROID_NDK_HOME /opt/android-ndk-${ANDROID_NDK_VERSION}
+ENV PATH ${ANDROID_NDK_HOME}:$PATH
 
 ENV ANDROID_API_LEVELS android-23
 ENV ANDROID_EXTRA_COMPONENTS extra-android-m2repository,extra-google-m2repository
@@ -61,11 +71,18 @@ ENV ANDROID_HOME /opt/android-sdk-linux
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 RUN cd /opt && \
     wget -q ${ANDROID_SDK_URL} && \
-    unzip -n ${ANDROID_SDK_FILENAME} -d android-sdk-linux && \
+    tar -xzf ${ANDROID_SDK_FILENAME} && \
     rm ${ANDROID_SDK_FILENAME} && \
+#    wget -q ${ANDROID_TOOLS_URL} && \
+#    unzip -n ${ANDROID_TOOLS_FILENAME} -d android-sdk-linux/tools && \
+#    rm ${ANDROID_TOOLS_FILENAME} && \
+#    wget -q ${ANDROID_PLATFORM_URL} && \
+#    unzip -n ${ANDROID_PLATFORM_FILENAME} -d  && \
+#    rm ${ANDROID_PLATFORM_FILENAME} && \
     wget -q ${ANDROID_NDK_URL} && \
-    unzip -n ${ANDROID_SDK_FILENAME} -d ndk-bundle && \
+    unzip  ${ANDROID_NDK_FILENAME} && \
     rm ${ANDROID_NDK_FILENAME} && \
+    
     echo y | android update sdk --no-ui -a --filter tools,platform-tools,${ANDROID_API_LEVELS},${ANDROID_BUILD_TOOLS_VERSION} && \
     echo y | android update sdk --no-ui --all --filter "${ANDROID_EXTRA_COMPONENTS}"
 
