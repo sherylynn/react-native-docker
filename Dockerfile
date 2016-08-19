@@ -45,11 +45,16 @@ RUN dpkg --add-architecture i386 && \
 # Installs Android SDK
 # ——————————
 
-ENV ANDROID_SDK_VERSION r24.4.1
-ENV ANDROID_BUILD_TOOLS_VERSION build-tools-23.0.3,build-tools-23.0.2,build-tools-23.0.1
+ENV ANDROID_SDK_VERSION r25.2.2
+ENV ANDROID_BUILD_TOOLS_VERSION build-tools-24.0.1 build-tools-24 build-tools-23.0.3,build-tools-23.0.2,build-tools-23.0.1
 
 ENV ANDROID_SDK_FILENAME android-sdk_${ANDROID_SDK_VERSION}-linux.tgz
 ENV ANDROID_SDK_URL http://dl.google.com/android/${ANDROID_SDK_FILENAME}
+
+ENV ANDROID_NDK_VERSION 12b
+ENV ANDROID_NDK_FILENAME android-ndk-r${ANDROID_NDK_VERSION}-linux-x86_64.zip
+ENV ANDROID_NDK_URL http://dl.google.com/android/repository/${ANDROID_NDK_FILENAME}
+
 ENV ANDROID_API_LEVELS android-23
 ENV ANDROID_EXTRA_COMPONENTS extra-android-m2repository,extra-google-m2repository
 ENV ANDROID_HOME /opt/android-sdk-linux
@@ -59,7 +64,10 @@ RUN cd /opt && \
     tar -xzf ${ANDROID_SDK_FILENAME} && \
     rm ${ANDROID_SDK_FILENAME} && \
     echo y | android update sdk --no-ui -a --filter tools,platform-tools,${ANDROID_API_LEVELS},${ANDROID_BUILD_TOOLS_VERSION} && \
-    echo y | android update sdk --no-ui --all --filter "${ANDROID_EXTRA_COMPONENTS}"
+    echo y | android update sdk --no-ui --all --filter "${ANDROID_EXTRA_COMPONENTS}" && \
+    wget -q ${ANDROID_NDK_URL} && \
+    unzip -n ${ANDROID_SDK_FILENAME} -d ndk-bundle && \
+    rm ${ANDROID_NDK_FILENAME}
 
 
 # ——————————
@@ -67,7 +75,7 @@ RUN cd /opt && \
 # ——————————
 
 # Gradle
-ENV GRADLE_VERSION 2.4
+ENV GRADLE_VERSION 2.10
 
 RUN cd /usr/lib \
  && curl -fl https://downloads.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -o gradle-bin.zip \
@@ -83,7 +91,7 @@ ENV PATH $PATH:$GRADLE_HOME/bin
 # ——————————
 # Install Node and global packages
 # ——————————
-ENV NODE_VERSION 5.6.0
+ENV NODE_VERSION 6.3.1
 RUN cd && \
     wget -q http://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz && \
     tar -xzf node-v${NODE_VERSION}-linux-x64.tar.gz && \
