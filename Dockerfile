@@ -47,12 +47,11 @@ RUN dpkg --add-architecture i386 && \
 
 ENV ANDROID_SDK_VERSION r25.2.2
 ENV ANDROID_BUILD_TOOLS_VERSION build-tools-24.0.1 build-tools-24 build-tools-23.0.3,build-tools-23.0.2,build-tools-23.0.1
+ENV ANDROID_SDK_FILENAME tools_${ANDROID_SDK_VERSION}-linux.zip
+ENV ANDROID_SDK_URL https://dl.google.com/android/repository/${ANDROID_SDK_FILENAME}
 
-ENV ANDROID_SDK_FILENAME android-sdk_${ANDROID_SDK_VERSION}-linux.tgz
-ENV ANDROID_SDK_URL https://dl.google.com/android/${ANDROID_SDK_FILENAME}
-
-ENV ANDROID_NDK_VERSION 12b
-ENV ANDROID_NDK_FILENAME android-ndk-r${ANDROID_NDK_VERSION}-linux-x86_64.zip
+ENV ANDROID_NDK_VERSION r12b
+ENV ANDROID_NDK_FILENAME android-ndk-${ANDROID_NDK_VERSION}-linux-x86_64.zip
 ENV ANDROID_NDK_URL https://dl.google.com/android/repository/${ANDROID_NDK_FILENAME}
 
 ENV ANDROID_API_LEVELS android-23
