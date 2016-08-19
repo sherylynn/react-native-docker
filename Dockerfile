@@ -49,7 +49,7 @@ ENV ANDROID_SDK_VERSION r24.4.1
 ENV ANDROID_SDK_FILENAME android-sdk_${ANDROID_SDK_VERSION}-linux.tgz
 ENV ANDROID_SDK_URL http://dl.google.com/android/${ANDROID_SDK_FILENAME}
 
-ENV ANDROID_BUILD_TOOLS_VERSION build-tools-24.0.1 build-tools-24 build-tools-23.0.3,build-tools-23.0.2,build-tools-23.0.1
+ENV ANDROID_BUILD_TOOLS_VERSION build-tools-24.0.1,build-tools-24,build-tools-23.0.3,build-tools-23.0.2,build-tools-23.0.1
 # ————————————————————————————
 #ENV ANDROID_TOOLS_VERSION r25.2.2
 #ENV ANDROID_TOOLS_FILENAME tools_${ANDROID_TOOLS_VERSION}-linux.zip
