@@ -45,6 +45,7 @@ RUN dpkg --add-architecture i386 && \
 # Installs Android SDK
 # ——————————
 
+
 ENV ANDROID_SDK_VERSION r25.2.2
 ENV ANDROID_BUILD_TOOLS_VERSION build-tools-24.0.1 build-tools-24 build-tools-23.0.3,build-tools-23.0.2,build-tools-23.0.1
 ENV ANDROID_SDK_FILENAME tools_${ANDROID_SDK_VERSION}-linux.zip
@@ -60,7 +61,7 @@ ENV ANDROID_HOME /opt/android-sdk-linux
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 RUN cd /opt && \
     wget -q ${ANDROID_SDK_URL} && \
-    tar -xzf ${ANDROID_SDK_FILENAME} && \
+    unzip -n ${ANDROID_SDK_FILENAME} -d android-sdk-linux && \
     rm ${ANDROID_SDK_FILENAME} && \
     wget -q ${ANDROID_NDK_URL} && \
     unzip -n ${ANDROID_SDK_FILENAME} -d ndk-bundle && \
