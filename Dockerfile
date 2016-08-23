@@ -59,12 +59,6 @@ ENV ANDROID_BUILD_TOOLS_VERSION build-tools-24.0.1,build-tools-24,build-tools-23
 #ENV ANDROID_PLATFORM_FILENAME platform-tools_${ANDROID_PLATFORM_VERSION}-linux.zip
 #ENV ANDROID_PLATFORM_URL https://dl.google.com/android/repository/${ANDROID_PLATFORM_FILENAME}
 # —————————————————————————————
-ENV ANDROID_NDK_VERSION r12b
-ENV ANDROID_NDK_FILENAME android-ndk-${ANDROID_NDK_VERSION}-linux-x86_64.zip
-ENV ANDROID_NDK_URL https://dl.google.com/android/repository/${ANDROID_NDK_FILENAME}
-
-ENV ANDROID_NDK_HOME /opt/android-ndk-${ANDROID_NDK_VERSION}
-ENV PATH ${ANDROID_NDK_HOME}:$PATH
 
 ENV ANDROID_API_LEVELS android-23
 ENV ANDROID_EXTRA_COMPONENTS extra-android-m2repository,extra-google-m2repository
@@ -80,13 +74,24 @@ RUN cd /opt && \
 #    wget -q ${ANDROID_PLATFORM_URL} && \
 #    unzip -n ${ANDROID_PLATFORM_FILENAME} -d  && \
 #    rm ${ANDROID_PLATFORM_FILENAME} && \
-    wget -q ${ANDROID_NDK_URL} && \
-    unzip  ${ANDROID_NDK_FILENAME} && \
-    rm ${ANDROID_NDK_FILENAME} && \
-    
+
     echo y | android update sdk --no-ui -a --filter tools,platform-tools,${ANDROID_API_LEVELS},${ANDROID_BUILD_TOOLS_VERSION} && \
     echo y | android update sdk --no-ui --all --filter "${ANDROID_EXTRA_COMPONENTS}"
 
+# ——————————
+# Installs Android NDK
+# ——————————
+
+ENV ANDROID_NDK_VERSION r12b
+ENV ANDROID_NDK_FILENAME android-ndk-${ANDROID_NDK_VERSION}-linux-x86_64.zip
+ENV ANDROID_NDK_URL https://dl.google.com/android/repository/${ANDROID_NDK_FILENAME}
+ENV ANDROID_NDK_HOME /opt/android-ndk-${ANDROID_NDK_VERSION}
+ENV PATH ${ANDROID_NDK_HOME}:$PATH
+
+RUN cd /opt && \
+    wget -q ${ANDROID_NDK_URL} && \
+    unzip  ${ANDROID_NDK_FILENAME} && \
+    rm ${ANDROID_NDK_FILENAME}
 
 
 # ——————————
