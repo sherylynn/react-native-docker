@@ -1,5 +1,6 @@
 # Pull base image.
 FROM ubuntu:14.04
+MAINTAINER Sherylynn <352281674@qq.com>
 
 # Install base software packages
 RUN apt-get update && \
