@@ -9,6 +9,7 @@ RUN apt-get update && \
     wget \
     curl \
     git \
+    build-essential \
     unzip -y && \
     apt-get clean
 
